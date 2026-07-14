@@ -1,0 +1,55 @@
+<!-- HERO CONTAINER & FLOATING SEARCH CARD -->
+<section id="search-section" class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+    <div class="relative rounded-3xl overflow-hidden h-[480px] bg-zinc-900 shadow-xl shadow-zinc-950/10">
+        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80" alt="Villa" class="absolute inset-0 w-full h-full object-cover opacity-50">
+        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-900/40 to-transparent"></div>
+
+        <div class="absolute inset-0 flex flex-col lg:flex-row items-center justify-between p-8 lg:p-16 gap-8">
+            <!-- Slogan Hero -->
+            <div class="text-white max-w-lg z-10 self-end lg:self-center">
+                <span class="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-xs font-semibold tracking-wider uppercase mb-4 inline-block border border-white/15">Saison d'été 2026</span>
+                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">Louez des maisons d'exception.</h1>
+                <p class="mt-3 text-zinc-200 text-sm sm:text-base font-medium">Réservez des séjours haut de gamme validés pour leur style minimaliste et haut confort.</p>
+            </div>
+
+            <!-- Floating Search Card -->
+            <div class="w-full max-w-md bg-white/80 backdrop-blur-xl border border-white/40 shadow-2xl rounded-3xl p-6 text-zinc-800 z-10">
+                <h2 class="text-xl font-bold text-zinc-950 mb-4 flex items-center gap-2">
+                    <span class="w-2.5 h-6 rounded-full bg-gradient-to-b from-rose-500 to-pink-600"></span>
+                    Où allez-vous ?
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1.5">Destination</label>
+                        <input type="text" x-model="searchCity" placeholder="Ex: Marrakech, Tanger..." 
+                               class="w-full px-4 py-3 bg-white/80 border border-zinc-200 rounded-2xl text-sm placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-accent transition duration-200">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1.5">Arrivée</label>
+                            <input type="date" class="w-full px-4 py-3 bg-white/80 border border-zinc-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-accent transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1.5">Départ</label>
+                            <input type="date" class="w-full px-4 py-3 bg-white/80 border border-zinc-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-accent transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label class="block text-xs font-bold text-zinc-500 uppercase tracking-wider">Prix maximum / nuit</label>
+                            <span class="text-xs font-extrabold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md" x-text="searchMaxPrice + ' €'"></span>
+                        </div>
+                        <input type="range" min="50" max="600" step="10" x-model="searchMaxPrice" 
+                               class="w-full h-1.5 bg-zinc-200 rounded-lg appearance-none cursor-pointer accent-accent">
+                    </div>
+
+                    <button @click="scrollToGrid()" class="w-full py-3.5 mt-2 rounded-2xl bg-gradient-to-r from-rose-500 to-pink-600 text-white font-bold text-sm shadow-lg shadow-rose-500/30 hover:brightness-110 active:scale-[0.98] transition duration-200 flex items-center justify-center gap-2">
+                        Voir les résultats disponibles
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
