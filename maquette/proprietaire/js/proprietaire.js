@@ -27,7 +27,7 @@
 })();
 
 /* ── Shared property data (simulated backend) ─────────────────────────── */
-var _sharedProperties = [
+var _defaultProperties = [
     {
         id: 1, title: 'Sunset Beach Villa', location: 'Tanger, Achakar', price: 280, rating: 4.9, category: 'beachfront',
         images: [
@@ -62,6 +62,16 @@ var _sharedProperties = [
     }
 ];
 
+if (!localStorage.getItem('stayflow_properties')) {
+    localStorage.setItem('stayflow_properties', JSON.stringify(_defaultProperties));
+}
+
+var _sharedProperties = JSON.parse(localStorage.getItem('stayflow_properties'));
+
+function savePropertiesToStorage(props) {
+    localStorage.setItem('stayflow_properties', JSON.stringify(props));
+}
+
 /* ── Dashboard app ────────────────────────────────────────────────────── */
 function proprioApp() {
     return {
@@ -73,13 +83,111 @@ function proprioApp() {
 function proprioManage() {
     return {
         properties: _sharedProperties,
+        
+        // Search & Filters state
+        searchQuery: '',
+        selectedCategory: '',
+        selectedStatus: '',
+        
+        // Pagination state
+        currentPage: 1,
+        itemsPerPage: 3,
+
+        // Custom confirm dialog state
+        confirmOpen: false,
+        confirmTitle: '',
+        confirmMessage: '',
+        confirmAction: null,
+
+        // Toast notifications state
+        toasts: [],
+        showToast: function (message, type = 'success') {
+            var id = Date.now();
+            this.toasts.push({ id: id, message: message, type: type, visible: true });
+            var self = this;
+            setTimeout(function() {
+                var toast = self.toasts.find(function(t) { return t.id === id; });
+                if (toast) toast.visible = false;
+            }, 3000);
+        },
+        
+        // Getters/Methods for filters
+        get filteredProperties() {
+            var q = this.searchQuery.toLowerCase().trim();
+            var cat = this.selectedCategory;
+            var stat = this.selectedStatus;
+            
+            return this.properties.filter(function (p) {
+                // Search query filter
+                if (q && !p.title.toLowerCase().includes(q) && !p.location.toLowerCase().includes(q)) {
+                    return false;
+                }
+                // Category filter
+                if (cat && p.category !== cat) {
+                    return false;
+                }
+                // Status filter
+                if (stat !== '') {
+                    var isDisp = stat === 'disponible';
+                    if (p.disponible !== isDisp) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+        },
+        
+        // Getters/Methods for pagination
+        get totalPages() {
+            return Math.ceil(this.filteredProperties.length / this.itemsPerPage) || 1;
+        },
+        
+        get paginatedProperties() {
+            // Adjust current page if it exceeds total pages due to filtering
+            if (this.currentPage > this.totalPages) {
+                this.currentPage = this.totalPages;
+            }
+            var start = (this.currentPage - 1) * this.itemsPerPage;
+            return this.filteredProperties.slice(start, start + this.itemsPerPage);
+        },
+        
+        prevPage: function () {
+            if (this.currentPage > 1) this.currentPage--;
+        },
+        
+        nextPage: function () {
+            if (this.currentPage < this.totalPages) this.currentPage++;
+        },
+        
+        goToPage: function (page) {
+            this.currentPage = page;
+        },
+        
+        // Availability toggle
         toggleAvailability: function (p) {
             p.disponible = !p.disponible;
+            savePropertiesToStorage(this.properties);
+            this.showToast(
+                p.title + ' est maintenant ' + (p.disponible ? 'disponible' : 'indisponible') + '.',
+                p.disponible ? 'success' : 'info'
+            );
         },
+        
+        // Delete property
         deleteProperty: function (id) {
-            if (confirm('Supprimer cette propriété ?')) {
-                this.properties = this.properties.filter(function (p) { return p.id !== id; });
-            }
+            var self = this;
+            this.confirmTitle = 'Supprimer la maison ?';
+            this.confirmMessage = 'Cette action est définitive. Êtes-vous sûr de vouloir retirer cette annonce de StayFlow ?';
+            this.confirmAction = function () {
+                _sharedProperties = _sharedProperties.filter(function (p) { return p.id !== id; });
+                self.properties = _sharedProperties;
+                savePropertiesToStorage(_sharedProperties);
+                if (self.currentPage > self.totalPages) {
+                    self.currentPage = self.totalPages;
+                }
+                self.showToast('Maison supprimée avec succès !', 'success');
+            };
+            this.confirmOpen = true;
         }
     }
 }
@@ -97,10 +205,18 @@ function proprioAdd() {
             superficie: '',
             category: 'pools',
             description: '',
-            images: ['']
+            images: []
         },
-        addImageField: function () {
-            if (this.form.images.length < 10) this.form.images.push('');
+        handleFiles: function (files) {
+            var self = this;
+            Array.from(files).forEach(function (file) {
+                if (!file.type.startsWith('image/')) return;
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    self.form.images.push(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            });
         },
         removeImage: function (idx) {
             this.form.images.splice(idx, 1);
@@ -113,7 +229,7 @@ function proprioAdd() {
             }
             var fallbackImg = 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80';
             _sharedProperties.unshift({
-                id: _sharedProperties.length + 1,
+                id: Date.now(),
                 title: this.form.title,
                 location: this.form.location,
                 price: Number(this.form.price),
@@ -127,6 +243,82 @@ function proprioAdd() {
                 superficie: Number(this.form.superficie),
                 capacite: Number(this.form.capacite)
             });
+            savePropertiesToStorage(_sharedProperties);
+            this.saved = true;
+        }
+    }
+}
+
+/* ── Edit house page ─────────────────────────────────────────────────── */
+function proprioEdit() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var id = Number(urlParams.get('id'));
+    var originalProp = _sharedProperties.find(function (p) { return p.id === id; });
+    
+    if (!originalProp) {
+        setTimeout(function() {
+            alert('Propriété introuvable.');
+            window.location.href = 'mes-maisons.html';
+        }, 100);
+        return {
+            saved: false,
+            form: { title: '', location: '', price: '', category: 'pools', disponible: true, images: [] }
+        };
+    }
+    
+    return {
+        saved: false,
+        form: JSON.parse(JSON.stringify(originalProp)),
+        
+        handleFiles: function (files) {
+            var self = this;
+            Array.from(files).forEach(function (file) {
+                if (!file.type.startsWith('image/')) return;
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    self.form.images.push(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            });
+        },
+        
+        removeImage: function (idx) {
+            this.form.images.splice(idx, 1);
+        },
+        
+        updateProperty: function () {
+            if (!this.form.title.trim() || !this.form.location.trim()) {
+                alert('Veuillez remplir le titre et la localisation.');
+                return;
+            }
+            if (this.form.images.length === 0) {
+                alert('Veuillez ajouter au moins une photo.');
+                return;
+            }
+            
+            var self = this;
+            _sharedProperties = _sharedProperties.map(function (p) {
+                if (p.id === self.form.id) {
+                    return {
+                        id: p.id,
+                        title: self.form.title,
+                        location: self.form.location,
+                        price: Number(self.form.price),
+                        rating: p.rating,
+                        category: self.form.category,
+                        images: self.form.images,
+                        description: self.form.description,
+                        favorited: p.favorited,
+                        disponible: self.form.disponible,
+                        chambres: Number(self.form.chambres),
+                        superficie: Number(self.form.superficie),
+                        capacite: Number(self.form.capacite)
+                    };
+                }
+                return p;
+            });
+            
+            savePropertiesToStorage(_sharedProperties);
             this.saved = true;
         }
     }
