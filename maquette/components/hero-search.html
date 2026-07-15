@@ -1,8 +1,11 @@
 <!-- HERO CONTAINER & FLOATING SEARCH CARD -->
 <section id="search-section" class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-    <div class="relative rounded-3xl overflow-hidden min-h-[480px] md:h-[480px] bg-zinc-900 shadow-xl shadow-zinc-950/10 flex items-center">
-        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80" alt="Villa" class="absolute inset-0 w-full h-full object-cover opacity-45">
-        <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-900/40 to-transparent"></div>
+    <div class="relative rounded-3xl min-h-[480px] md:h-[480px] bg-zinc-900 shadow-xl shadow-zinc-950/10 flex items-center">
+        <!-- Background Wrapper (to clip image rounded corners without clipping absolute child popups) -->
+        <div class="absolute inset-0 rounded-3xl overflow-hidden pointer-events-none">
+            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80" alt="Villa" class="w-full h-full object-cover opacity-45">
+            <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-900/40 to-transparent"></div>
+        </div>
 
         <div class="relative w-full flex flex-col items-center justify-center p-6 sm:p-12 lg:p-16 gap-10 text-center z-10">
             <!-- Slogan Hero -->
