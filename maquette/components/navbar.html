@@ -1,0 +1,71 @@
+<!-- NAVBAR -->
+<header class="sticky top-0 z-50 w-full border-b border-zinc-200/60 bg-white/80 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
+
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-2 group shrink-0">
+            <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-lg sm:text-xl shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform duration-300">S</span>
+            <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-extrabold text-lg sm:text-xl tracking-tight hidden sm:block">StayFlow</span>
+        </a>
+
+        <!-- Floating Search Pill (desktop) -->
+        <div class="hidden md:flex items-center p-1.5 pl-6 pr-2 rounded-full border border-zinc-200 bg-white/90 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
+             @click="scrollToSearch()">
+            <div class="flex items-center gap-6 text-sm">
+                <span class="font-semibold text-zinc-700 hover:text-blue-600 transition">N'importe où</span>
+                <span class="w-px h-4 bg-zinc-200"></span>
+                <span class="font-semibold text-zinc-700 hover:text-blue-600 transition">Une semaine</span>
+                <span class="w-px h-4 bg-zinc-200"></span>
+                <span class="text-zinc-400">Ajouter des voyageurs</span>
+            </div>
+            <button class="ml-4 w-9 h-9 rounded-full bg-accent flex items-center justify-center text-white shadow-md shadow-blue-500/10 hover:brightness-110 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            </button>
+        </div>
+
+        <!-- Right actions -->
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+            <a href="proprietaire/index.html" class="hidden lg:block text-sm font-semibold py-2 px-4 rounded-full text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 transition">
+                Mettre mon logement
+            </a>
+
+            <!-- Avatar / Login -->
+            <div class="relative" @click.outside="profileOpen = false">
+                <button @click="profileOpen = !profileOpen"
+                        class="flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-full border border-zinc-200 bg-white hover:shadow-md transition duration-200 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-500 sm:ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="Avatar" class="w-8 h-8 rounded-full object-cover border border-zinc-100">
+                        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></span>
+                    </div>
+                </button>
+
+                <!-- Dropdown -->
+                <div x-show="profileOpen"
+                     x-transition:enter="transition ease-out duration-150"
+                     x-transition:enter-start="opacity-0 scale-95 -translate-y-2"
+                     x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                     x-transition:leave="transition ease-in duration-100"
+                     x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                     x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
+                     class="absolute right-0 mt-3 w-60 sm:w-64 bg-white/95 backdrop-blur-md border border-zinc-200/80 rounded-2xl shadow-xl py-2 z-50 text-sm text-zinc-700"
+                     style="display: none;">
+                    <div class="px-4 py-2.5 border-b border-zinc-100">
+                        <p class="font-bold text-zinc-900">Salma Alami</p>
+                        <p class="text-xs text-zinc-400">salma.alami@email.com</p>
+                    </div>
+                    <div class="py-1">
+                        <a href="#" class="block px-4 py-2 hover:bg-zinc-100 transition">Mon profil</a>
+                        <a href="#" class="block px-4 py-2 hover:bg-zinc-100 transition">Mes Réservations</a>
+                        <a href="proprietaire/index.html" class="block px-4 py-2 hover:bg-zinc-100 transition">Panel Propriétaire</a>
+                        <a href="admin/index.html" class="block px-4 py-2 hover:bg-zinc-100 transition">Admin Panel</a>
+                    </div>
+                    <div class="border-t border-zinc-100 my-1"></div>
+                    <div class="py-1">
+                        <a href="login.html" class="block px-4 py-2 hover:bg-zinc-100 transition text-blue-600 font-semibold">Connexion / S'inscrire</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

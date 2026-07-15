@@ -1,0 +1,43 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Visiteur" as V
+actor "Client" as C
+actor "Propriétaire" as P
+actor "Administrateur" as A
+
+rectangle "Système de Réservation de Maisons" {
+    usecase "Consulter la page d'accueil" as UC_Accueil
+    usecase "Rechercher des maisons" as UC_Recherche
+    usecase "Consulter les détails d'une maison" as UC_Details
+    usecase "S'authentifier (Login/Register)" as UC_Auth
+    
+    usecase "Réserver une maison" as UC_Reserver
+    
+    usecase "Ajouter une maison" as UC_Ajouter
+    usecase "Consulter les réservations de ses maisons" as UC_VoirRes_Proprio
+    
+    usecase "Consulter le Dashboard (Statistiques)" as UC_Dashboard
+    usecase "Gérer les utilisateurs (Liste/Suppression)" as UC_GererUsers
+}
+
+V --> UC_Accueil
+V --> UC_Recherche
+V --> UC_Details
+V --> UC_Auth
+
+C --> UC_Reserver
+UC_Reserver ..> UC_Auth : <<include>>
+
+P --> UC_Ajouter
+P --> UC_VoirRes_Proprio
+UC_Ajouter ..> UC_Auth : <<include>>
+UC_VoirRes_Proprio ..> UC_Auth : <<include>>
+
+A --> UC_Dashboard
+A --> UC_GererUsers
+UC_Dashboard ..> UC_Auth : <<include>>
+UC_GererUsers ..> UC_Auth : <<include>>
+
+@enduml

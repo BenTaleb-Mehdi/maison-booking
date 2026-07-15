@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full bg-zinc-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter une maison - StayFlow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] }, colors: { accent: '#2563EB' } } }
+        }
+    </script>
+    <style>[x-cloak] { display: none !important; }</style>
+</head>
+<body class="font-sans antialiased text-zinc-800 bg-zinc-50 min-h-screen" x-data="proprioAdd()">
+
+    <div class="flex min-h-screen">
+        <div data-include="sidebar"></div>
+
+        <div class="flex-1 flex flex-col min-w-0">
+            <!-- Navbar -->
+            <div data-include="navbar"></div>
+
+            <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+                <div class="max-w-3xl mx-auto">
+                    <div class="mb-8">
+                        <h1 class="text-2xl sm:text-3xl font-black text-zinc-950">Ajouter une maison</h1>
+                        <p class="text-sm text-zinc-400 mt-1">Remplissez les informations et ajoutez des photos</p>
+                    </div>
+
+                    <form @submit.prevent="addProperty()" class="space-y-6">
+                        <!-- Photos (multi-image) -->
+                        <div class="bg-white rounded-2xl border border-zinc-200/60 shadow-sm p-5 sm:p-6">
+                            <h2 class="font-bold text-zinc-900 mb-4 flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                Photos du logement
+                                <span class="text-xs text-zinc-400 font-normal">(minimum 1, maximum 10)</span>
+                            </h2>
+
+                            <!-- Image URL inputs -->
+                            <div class="space-y-3">
+                                <template x-for="(img, idx) in form.images" :key="idx">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-bold text-zinc-400 w-6 text-center" x-text="idx + 1"></span>
+                                        <input type="url" x-model="form.images[idx]" :placeholder="'URL de la photo ' + (idx + 1)"
+                                               class="flex-1 px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition">
+                                        <button type="button" x-show="form.images.length > 1" @click="removeImage(idx)"
+                                                class="p-2 text-zinc-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <button type="button" x-show="form.images.length < 10" @click="addImageField()"
+                                    class="mt-3 flex items-center gap-2 text-xs font-semibold text-blue-600 hover:text-blue-800 hover:bg-blue-50 px-3 py-2 rounded-lg transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                                Ajouter une photo
+                            </button>
+
+                            <!-- Preview -->
+                            <div x-show="form.images.filter(i => i).length > 0" class="mt-4 flex gap-2 overflow-x-auto no-scrollbar pb-2">
+                                <template x-for="(img, idx) in form.images.filter(i => i)" :key="'prev-'+idx">
+                                    <div class="relative shrink-0">
+                                        <img :src="img" class="w-20 h-20 rounded-xl object-cover border-2 border-zinc-200" @error="$el.style.display='none'">
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Basic info -->
+                        <div class="bg-white rounded-2xl border border-zinc-200/60 shadow-sm p-5 sm:p-6">
+                            <h2 class="font-bold text-zinc-900 mb-4">Informations générales</h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Titre de l'annonce</label>
+                                    <input type="text" x-model="form.title" required placeholder="Ex: Villa Sunset Boulevard"
+                                           class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition">
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Ville / Région</label>
+                                        <input type="text" x-model="form.location" required placeholder="Ex: Tanger"
+                                               class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Prix / nuit (€)</label>
+                                        <input type="number" x-model="form.price" required placeholder="Ex: 180" min="10"
+                                               class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Chambres</label>
+                                        <input type="number" x-model="form.chambres" required placeholder="3" min="1"
+                                               class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Capacité (pers.)</label>
+                                        <input type="number" x-model="form.capacite" required placeholder="6" min="1"
+                                               class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Superficie (m²)</label>
+                                        <input type="number" x-model="form.superficie" required placeholder="120" min="10"
+                                               class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Catégorie</label>
+                                    <select x-model="form.category" class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition">
+                                        <option value="pools">Piscine d'exception</option>
+                                        <option value="beachfront">Bord de mer</option>
+                                        <option value="cabins">Cabane</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Description</label>
+                                    <textarea x-model="form.description" required rows="4" placeholder="Décrivez votre logement en détail..."
+                                              class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition resize-none"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button type="submit" class="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-sm shadow-lg shadow-blue-500/20 hover:brightness-110 active:scale-[0.98] transition-all duration-200">
+                                Publier l'annonce
+                            </button>
+                            <a href="mes-maisons.html" class="py-3.5 px-6 rounded-xl border border-zinc-200 text-zinc-600 font-bold text-sm hover:bg-zinc-100 transition text-center">Annuler</a>
+                        </div>
+                    </form>
+
+                    <!-- Success message -->
+                    <div x-show="saved" x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-zinc-950/60 backdrop-blur-sm p-4">
+                        <div x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" class="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full text-center">
+                            <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                            </div>
+                            <h2 class="text-xl font-black text-zinc-950">Maison publiée !</h2>
+                            <p class="text-sm text-zinc-500 mt-2">Votre annonce est maintenant visible sur StayFlow.</p>
+                            <a href="mes-maisons.html" class="inline-block mt-6 px-8 py-3 rounded-xl bg-zinc-950 text-white font-bold text-sm hover:brightness-110 transition">Voir mes maisons</a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/proprietaire.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+classDiagram
+    class User {
+        +int id
+        +string name
+        +string email
+        +string password
+        +string role
+        +register()
+        +login()
+    }
+    class Maison {
+        +int id
+        +string titre
+        +string description
+        +double prix
+        +string ville
+        +boolean disponibilite
+        +int proprietaire_id
+        +create()
+        +update()
+        +delete()
+    }
+    class Reservation {
+        +int id
+        +int maison_id
+        +int client_id
+        +date date_debut
+        +date date_fin
+        +string statut
+        +creerReservation()
+    }
+    class Image {
+        +int id
+        +int maison_id
+        +string url
+    }
+
+    User "1" --> "0..*" Maison : possede (Proprietaire)
+    User "1" --> "0..*" Reservation : effectue (Client)
+    Maison "1" --> "0..*" Reservation : est reservee
+    Maison "1" --> "1..*" Image : contient
