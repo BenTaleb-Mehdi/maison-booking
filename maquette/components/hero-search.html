@@ -1,53 +1,111 @@
 <!-- HERO CONTAINER & FLOATING SEARCH CARD -->
 <section id="search-section" class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-    <div class="relative rounded-3xl overflow-hidden h-[480px] bg-zinc-900 shadow-xl shadow-zinc-950/10">
-        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80" alt="Villa" class="absolute inset-0 w-full h-full object-cover opacity-50">
+    <div class="relative rounded-3xl overflow-hidden min-h-[480px] md:h-[480px] bg-zinc-900 shadow-xl shadow-zinc-950/10 flex items-center">
+        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80" alt="Villa" class="absolute inset-0 w-full h-full object-cover opacity-45">
         <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-900/40 to-transparent"></div>
 
-        <div class="absolute inset-0 flex flex-col lg:flex-row items-center justify-between p-8 lg:p-16 gap-8">
+        <div class="relative w-full flex flex-col items-center justify-center p-6 sm:p-12 lg:p-16 gap-10 text-center z-10">
             <!-- Slogan Hero -->
-            <div class="text-white max-w-lg z-10 self-end lg:self-center">
+            <div class="text-white max-w-2xl">
                 <span class="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-xs font-semibold tracking-wider uppercase mb-4 inline-block border border-white/15">Saison d'été 2026</span>
-                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">Louez des maisons d'exception.</h1>
-                <p class="mt-3 text-zinc-200 text-sm sm:text-base font-medium">Réservez des séjours haut de gamme validés pour leur style minimaliste et haut confort.</p>
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">Louez des maisons d'exception.</h1>
+                <p class="mt-4 text-zinc-200 text-sm sm:text-lg font-medium">Réservez des séjours haut de gamme validés pour leur style minimaliste et haut confort.</p>
             </div>
 
-            <!-- Floating Search Card -->
-            <div class="w-full max-w-md bg-white/80 backdrop-blur-xl border border-white/40 shadow-2xl rounded-3xl p-6 text-zinc-800 z-10">
-                <h2 class="text-xl font-bold text-zinc-950 mb-4 flex items-center gap-2">
-                    <span class="w-2.5 h-6 rounded-full bg-gradient-to-b from-blue-600 to-indigo-600"></span>
-                    Où allez-vous ?
-                </h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1.5">Destination</label>
-                        <input type="text" x-model="searchCity" placeholder="Ex: Marrakech, Tanger..." 
-                               class="w-full px-4 py-3 bg-white/80 border border-zinc-200 rounded-2xl text-sm placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-accent transition duration-200">
+            <!-- Airbnb-style Pill Search Bar -->
+            <div class="w-full max-w-5xl bg-white/95 backdrop-blur-md border border-white/40 shadow-2xl rounded-3xl md:rounded-full p-2 text-zinc-800 transition duration-300">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-2 md:gap-0 w-full relative">
+                    
+                    <!-- Section 1: Where -->
+                    <div class="flex flex-col flex-1 px-6 py-2.5 w-full md:border-r border-zinc-200 text-left rounded-2xl md:rounded-full hover:bg-zinc-100/60 transition-all duration-200">
+                        <label class="block text-[10px] font-extrabold text-zinc-400 uppercase tracking-widest cursor-pointer">Où</label>
+                        <input type="text" x-model="searchCity" placeholder="Rechercher des destinations..."
+                               class="w-full bg-transparent border-0 p-0 text-sm placeholder-zinc-400 focus:ring-0 focus:outline-none mt-0.5 text-zinc-800 font-bold cursor-pointer">
+                    </div>
+                    
+                    <!-- Section 2: When -->
+                    <div class="flex flex-col flex-1 px-6 py-2.5 w-full md:border-r border-zinc-200 text-left relative rounded-2xl md:rounded-full hover:bg-zinc-100/60 transition-all duration-200" x-data="{ dateOpen: false }">
+                        <label class="block text-[10px] font-extrabold text-zinc-400 uppercase tracking-widest cursor-pointer" @click="dateOpen = !dateOpen">Quand</label>
+                        <button type="button" @click="dateOpen = !dateOpen" class="w-full text-left bg-transparent border-0 p-0 text-sm mt-0.5 focus:outline-none focus:ring-0 flex items-center justify-between">
+                            <span x-text="checkInDate ? (checkOutDate ? formattedCheckIn + ' - ' + formattedCheckOut : formattedCheckIn) : 'Ajouter des dates...'" :class="checkInDate ? 'text-zinc-800 font-bold' : 'text-zinc-400 font-normal'"></span>
+                        </button>
+                        
+                        <!-- Popover Calendar -->
+                        <div x-show="dateOpen" @click.outside="dateOpen = false"
+                             x-transition:enter="transition ease-out duration-150"
+                             x-transition:enter-start="opacity-0 scale-95 translate-y-2"
+                             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                             class="absolute top-full left-0 md:left-1/2 md:-translate-x-1/2 mt-4 bg-white border border-zinc-200 rounded-3xl shadow-2xl z-40 p-5 w-[320px] cursor-default" 
+                             style="display: none;">
+                             <div class="flex items-center justify-between mb-4 font-sans px-2">
+                                 <span class="text-sm font-extrabold text-zinc-800">Juillet 2026</span>
+                                 <div class="flex gap-1">
+                                     <button type="button" class="p-1 rounded hover:bg-zinc-100 text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg></button>
+                                     <button type="button" class="p-1 rounded hover:bg-zinc-100 text-zinc-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg></button>
+                                 </div>
+                             </div>
+                             <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-black text-zinc-400 mb-2 uppercase tracking-wider font-sans">
+                                 <div>Di</div><div>Lu</div><div>Ma</div><div>Me</div><div>Je</div><div>Ve</div><div>Sa</div>
+                             </div>
+                             <div class="grid grid-cols-7 gap-y-1 text-center text-xs font-semibold text-zinc-700 font-sans">
+                                 <template x-for="(day, idx) in calendarDays" :key="idx">
+                                     <div class="aspect-square flex items-center justify-center rounded-full transition-all duration-200">
+                                         <button type="button" x-show="day.value"
+                                                 @click="selectCalendarDay(day)"
+                                                 class="w-9 h-9 flex items-center justify-center rounded-full text-xs font-extrabold transition-all duration-200"
+                                                 :class="isDaySelected(day) ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25' : (isDayInRange(day) ? 'bg-blue-50 text-blue-600 rounded-none w-full' : 'text-zinc-700 hover:bg-zinc-100')"
+                                                 x-text="day.value">
+                                         </button>
+                                     </div>
+                                 </template>
+                             </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Section 3: Who -->
+                    <div class="flex flex-col flex-1 px-6 py-2.5 w-full md:border-r border-zinc-200 text-left relative rounded-2xl md:rounded-full hover:bg-zinc-100/60 transition-all duration-200" x-data="{ guestOpen: false }">
+                        <label class="block text-[10px] font-extrabold text-zinc-400 uppercase tracking-widest cursor-pointer" @click="guestOpen = !guestOpen">Qui</label>
+                        <button type="button" @click="guestOpen = !guestOpen" class="w-full text-left bg-transparent border-0 p-0 text-sm mt-0.5 focus:outline-none focus:ring-0 text-zinc-800 font-bold" x-text="searchGuests > 1 ? searchGuests + ' voyageurs' : searchGuests + ' voyageur'"></button>
+                        
+                        <!-- Guest Popover -->
+                        <div x-show="guestOpen" @click.outside="guestOpen = false"
+                             x-transition:enter="transition ease-out duration-150"
+                             x-transition:enter-start="opacity-0 scale-95 translate-y-2"
+                             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                             class="absolute top-full left-0 mt-4 bg-white border border-zinc-200 rounded-3xl shadow-2xl z-40 p-5 w-72 cursor-default" 
+                             style="display: none;">
+                            <div class="flex items-center justify-between pb-4 border-b border-zinc-100">
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-bold text-zinc-800">Voyageurs</span>
+                                    <span class="text-[10px] text-zinc-400 font-medium">Nombre de voyageurs</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <button type="button" @click="if(searchGuests > 1) searchGuests--" :class="searchGuests <= 1 ? 'opacity-30 cursor-not-allowed' : 'hover:border-zinc-800 text-zinc-650'" class="w-8 h-8 rounded-full border border-zinc-200 flex items-center justify-center font-bold transition shadow-sm">-</button>
+                                    <span class="text-sm font-bold text-zinc-850 w-4 text-center" x-text="searchGuests"></span>
+                                    <button type="button" @click="searchGuests++" class="w-8 h-8 rounded-full border border-zinc-200 hover:bg-zinc-150 flex items-center justify-center text-zinc-650 font-bold transition shadow-sm">+</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1.5">Arrivée</label>
-                            <input type="date" class="w-full px-4 py-3 bg-white/80 border border-zinc-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-accent transition">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-zinc-500 uppercase tracking-wider mb-1.5">Départ</label>
-                            <input type="date" class="w-full px-4 py-3 bg-white/80 border border-zinc-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-accent transition">
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between items-center mb-1.5">
-                            <label class="block text-xs font-bold text-zinc-500 uppercase tracking-wider">Prix maximum / nuit</label>
-                            <span class="text-xs font-extrabold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md" x-text="searchMaxPrice + ' €'"></span>
+                    <!-- Section 4: Budget Max slider -->
+                    <div class="flex flex-col flex-1 px-6 py-2.5 w-full text-left rounded-2xl md:rounded-full hover:bg-zinc-100/60 transition-all duration-200">
+                        <div class="flex justify-between items-center">
+                            <label class="block text-[10px] font-extrabold text-zinc-400 uppercase tracking-widest font-sans">Budget Max</label>
+                            <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md" x-text="searchMaxPrice + ' €'"></span>
                         </div>
                         <input type="range" min="50" max="600" step="10" x-model="searchMaxPrice" 
-                               class="w-full h-1.5 bg-zinc-200 rounded-lg appearance-none cursor-pointer accent-accent">
+                               class="w-full h-1.5 bg-zinc-200 rounded-lg appearance-none cursor-pointer accent-blue-600 mt-2">
                     </div>
-
-                    <button @click="scrollToGrid()" class="w-full py-3.5 mt-2 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-sm shadow-lg shadow-blue-500/30 hover:brightness-110 active:scale-[0.98] transition duration-200 flex items-center justify-center gap-2">
-                        Voir les résultats disponibles
-                    </button>
+                    
+                    <!-- Search Button -->
+                    <div class="pl-2 pr-2 pb-2 md:pb-0 md:pt-0 shrink-0">
+                        <button @click="scrollToGrid()"
+                                class="w-full md:w-auto px-8 py-3.5 rounded-2xl md:rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:brightness-110 active:scale-[0.98] text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2 h-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                            Rechercher
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@
 <aside x-data="{ collapsed: false, mobileOpen: false, currentPage: '' }"
        x-init="currentPage = window.location.pathname.split('/').pop() || 'index.html'"
        @toggle-sidebar.window="mobileOpen = !mobileOpen"
-       class="h-screen shrink-0 transition-all duration-300 z-50"
+       class="h-screen shrink-0 transition-all duration-300 z-50 relative"
        :class="{
            'w-20': collapsed,
            'w-64': !collapsed,
@@ -10,17 +10,18 @@
            'hidden lg:block lg:sticky lg:top-0': !mobileOpen
        }">
 
+    <!-- Collapse Button -->
+    <button @click="collapsed = !collapsed"
+            class="hidden lg:flex absolute -right-3.5 top-6 z-50 bg-white border border-zinc-200 p-1.5 rounded-full text-zinc-400 hover:text-zinc-700 hover:bg-zinc-50 transition-transform shadow-sm"
+            :class="collapsed ? 'rotate-180' : ''">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+    </button>
+
     <div x-show="mobileOpen" @click="mobileOpen = false" class="fixed inset-0 bg-black/50 lg:hidden" x-transition.opacity></div>
 
     <div class="relative h-full flex flex-col bg-white border-r border-zinc-200 transition-all duration-300 w-full overflow-hidden">
-
-        <button @click="collapsed = !collapsed"
-                class="hidden lg:flex absolute -right-3.5 top-6 z-10 bg-white border border-zinc-200 p-1.5 rounded-full text-zinc-400 hover:text-zinc-700 hover:bg-zinc-50 transition-transform shadow-sm"
-                :class="collapsed ? 'rotate-180' : ''">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-        </button>
 
         <div class="h-16 sm:h-20 flex items-center px-4 border-b border-zinc-200 shrink-0"
              :class="collapsed ? 'justify-center' : 'justify-between'">

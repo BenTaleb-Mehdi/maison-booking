@@ -44,6 +44,23 @@ function adminUsers() {
             { id: 6, name: 'Karim Idrissi',  email: 'karim@email.com',    role: 'voyageur',     date: '22 Mai. 2026',  reservations: 1,  avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80' },
             { id: 7, name: 'Nadia Berrada',  email: 'nadia@email.com',    role: 'proprietaire', date: '1 Juin. 2026',  reservations: 15, avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=100&q=80' },
         ],
+        // Custom confirm dialog state
+        confirmOpen: false,
+        confirmTitle: '',
+        confirmMessage: '',
+        confirmAction: null,
+
+        // Toast notifications state
+        toasts: [],
+        showToast: function (message, type = 'success') {
+            var id = Date.now();
+            this.toasts.push({ id: id, message: message, type: type, visible: true });
+            var self = this;
+            setTimeout(function() {
+                var toast = self.toasts.find(function(t) { return t.id === id; });
+                if (toast) toast.visible = false;
+            }, 3000);
+        },
         filteredUsers: function () {
             var self = this;
             if (!self.search) return self.users;
@@ -53,9 +70,14 @@ function adminUsers() {
             });
         },
         deleteUser: function (id) {
-            if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
-                this.users = this.users.filter(function (u) { return u.id !== id; });
-            }
+            var self = this;
+            this.confirmTitle = 'Supprimer l\'utilisateur ?';
+            this.confirmMessage = 'Cette action est définitive et supprimera le profil de cet utilisateur.';
+            this.confirmAction = function () {
+                self.users = self.users.filter(function (u) { return u.id !== id; });
+                self.showToast('Utilisateur supprimé avec succès !', 'success');
+            };
+            this.confirmOpen = true;
         }
     }
 }
