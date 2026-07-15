@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
-            theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] }, colors: { accent: '#FF385C' } } }
+            theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] }, colors: { accent: '#2563EB' } } }
         }
     </script>
 </head>
@@ -18,10 +18,10 @@
     <header class="w-full border-b border-zinc-200/60 bg-white/80 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-2 group">
-                <span class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-rose-500 to-violet-600 flex items-center justify-center text-white font-black text-lg shadow-lg shadow-rose-500/20">S</span>
-                <span class="bg-gradient-to-r from-rose-500 to-violet-600 bg-clip-text text-transparent font-extrabold text-lg tracking-tight hidden sm:block">StayFlow</span>
+                <span class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-lg shadow-lg shadow-blue-500/20">S</span>
+                <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent font-extrabold text-lg tracking-tight hidden sm:block">StayFlow</span>
             </a>
-            <a href="login.html" class="text-sm font-semibold text-zinc-600 hover:text-zinc-900 transition">Se connecter</a>
+            <a href="login.html" class="text-sm font-semibold text-zinc-600 hover:text-blue-600 transition">Se connecter</a>
         </div>
     </header>
 
@@ -31,7 +31,7 @@
             <div class="bg-white rounded-3xl shadow-xl border border-zinc-200/60 p-6 sm:p-10">
                 <!-- Header -->
                 <div class="text-center mb-8">
-                    <span class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-rose-500 to-violet-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-rose-500/20 mx-auto mb-4">S</span>
+                    <span class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-500/20 mx-auto mb-4">S</span>
                     <h1 class="text-2xl font-black text-zinc-950">Créer un compte</h1>
                     <p class="text-sm text-zinc-400 mt-2">Rejoignez StayFlow en quelques secondes</p>
                 </div>
@@ -41,37 +41,37 @@
                     <div>
                         <label class="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Nom complet</label>
                         <input type="text" required placeholder="Fatima Zahra"
-                               class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-accent transition">
+                               class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-accent transition">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Adresse e-mail</label>
                         <input type="email" required placeholder="exemple@mail.com"
-                               class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-accent transition">
+                               class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-accent transition">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Mot de passe</label>
                         <input type="password" required placeholder="8 caractères minimum" minlength="8"
-                               class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-accent transition">
+                               class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-accent transition">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Confirmer le mot de passe</label>
                         <input type="password" required placeholder="Retapez votre mot de passe" minlength="8"
-                               class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-accent transition">
+                               class="w-full px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-accent transition">
                     </div>
 
                     <!-- Role selection -->
                     <div>
                         <label class="block text-xs font-bold text-zinc-500 mb-2 uppercase tracking-wider">Je suis</label>
                         <div class="grid grid-cols-2 gap-3">
-                            <label class="flex items-center gap-3 p-3 rounded-xl border-2 border-zinc-200 cursor-pointer has-[:checked]:border-rose-500 has-[:checked]:bg-rose-50 transition">
-                                <input type="radio" name="role" value="voyageur" checked class="text-rose-500 focus:ring-rose-500/20">
+                            <label class="flex items-center gap-3 p-3 rounded-xl border-2 border-zinc-200 cursor-pointer has-[:checked]:border-blue-600 has-[:checked]:bg-blue-50/50 transition">
+                                <input type="radio" name="role" value="voyageur" checked class="text-blue-600 focus:ring-blue-500/20">
                                 <div>
                                     <p class="text-sm font-bold text-zinc-900">Voyageur</p>
                                     <p class="text-[11px] text-zinc-400">Réserver des maisons</p>
                                 </div>
                             </label>
-                            <label class="flex items-center gap-3 p-3 rounded-xl border-2 border-zinc-200 cursor-pointer has-[:checked]:border-rose-500 has-[:checked]:bg-rose-50 transition">
-                                <input type="radio" name="role" value="proprietaire" class="text-rose-500 focus:ring-rose-500/20">
+                            <label class="flex items-center gap-3 p-3 rounded-xl border-2 border-zinc-200 cursor-pointer has-[:checked]:border-blue-600 has-[:checked]:bg-blue-50/50 transition">
+                                <input type="radio" name="role" value="proprietaire" class="text-blue-600 focus:ring-blue-500/20">
                                 <div>
                                     <p class="text-sm font-bold text-zinc-900">Propriétaire</p>
                                     <p class="text-[11px] text-zinc-400">Louer ma maison</p>
@@ -81,8 +81,8 @@
                     </div>
 
                     <label class="flex items-start gap-2 cursor-pointer mt-2">
-                        <input type="checkbox" required class="rounded border-zinc-300 text-rose-500 focus:ring-rose-500/20 mt-0.5">
-                        <span class="text-xs text-zinc-500">J'accepte les <a href="#" class="text-rose-500 font-semibold hover:underline">Conditions d'utilisation</a> et la <a href="#" class="text-rose-500 font-semibold hover:underline">Politique de confidentialité</a></span>
+                        <input type="checkbox" required class="rounded border-zinc-300 text-blue-600 focus:ring-blue-500/20 mt-0.5">
+                        <span class="text-xs text-zinc-500">J'accepte les <a href="#" class="text-blue-600 font-semibold hover:underline">Conditions d'utilisation</a> et la <a href="#" class="text-blue-600 font-semibold hover:underline">Politique de confidentialité</a></span>
                     </label>
 
                     <button type="submit" class="w-full py-3.5 rounded-xl bg-zinc-950 text-white font-bold text-sm hover:brightness-110 active:scale-[0.98] transition-all duration-200 mt-2">
@@ -112,7 +112,7 @@
 
             <p class="text-center text-sm text-zinc-500 mt-6">
                 Déjà un compte ?
-                <a href="login.html" class="font-bold text-rose-500 hover:underline">Se connecter</a>
+                <a href="login.html" class="font-bold text-blue-600 hover:underline">Se connecter</a>
             </p>
         </div>
     </main>
